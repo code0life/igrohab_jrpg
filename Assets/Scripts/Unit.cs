@@ -34,9 +34,9 @@ public class Unit : MonoBehaviour
     {
         Debug.Log("ApplyAbility - " + ability.name + " â şíèòà " + unit_name);
         DamageÑalculation(ability);
+        //CheckCountStatus();
         CheckStatusAbility(ability);
         ability.Use();
-        //CheckUnitStatuses();
     }
 
     public void DamageÑalculation(Ability ability)
@@ -247,6 +247,32 @@ public class Unit : MonoBehaviour
         return available_abilities[UnityEngine.Random.Range(0, available_abilities.Count)];
     }
 
+    public void CheckCountStatus()
+    {
+        Debug.Log("CheckCountStatus " + unit_name);
+
+        if (GetStunStatus() != null)
+        {
+            Debug.Log("GetStunStatus " + unit_name);
+            Ability status1 = GetStunStatus();
+            CheckActionTime(status1);
+        }
+
+        if (GetProtectionStatus() != null)
+        {
+            Debug.Log("GetProtectionStatus " + unit_name);
+            Ability status2 = GetProtectionStatus();
+            CheckActionTime(status2);
+        }
+
+        if (GetPoisonStatus() != null)
+        {
+            Debug.Log("GetPoisonStatus " + unit_name);
+            Ability status3 = GetPoisonStatus();
+            CheckActionTime(status3);
+        }
+    }
+
     public void StatusDamage()
     {
         Debug.Log("StatusDamage Ïàññèâíûé óğîí şíèòà â íà÷àëå õîäà " + unit_name + "");
@@ -259,7 +285,7 @@ public class Unit : MonoBehaviour
         {
             Debug.Log("StatusDamage Ñíèìàåì ñòàí ó " + unit_name);
             Ability status_stun = GetStunStatus();
-            CheckActionTime(status_stun);
+            //CheckActionTime(status_stun);
         }
         //    Debug.Log("Ó şíèòà " + unit_name + " íåò ÑÒÀÍÀ. ÎØÈÁÊÀ");
 
@@ -297,7 +323,7 @@ public class Unit : MonoBehaviour
                 Debug.Log("Ó current_hp " + current_hp);
             }
 
-                CheckActionTime(status_poison);
+                //CheckActionTime(status_poison);
 
             }
 
@@ -306,10 +332,11 @@ public class Unit : MonoBehaviour
                 Debug.Log("Ó şíèòà " + unit_name + " Ïîäòâåğæäàåöà ÙÈÒ. Óìåíüøàåì åãî íà 1.");
                 //Debug.Log("DamageÑalculation - " + ability.damage / 2);
                 Ability status_protection = GetProtectionStatus();
-                CheckActionTime(status_protection);
+                //CheckActionTime(status_protection);
 
             }
         //}
+
     }
 
     public void CheckActionTime(Ability _ability)
@@ -336,6 +363,7 @@ public class Unit : MonoBehaviour
 
     public void OnTurnStart()
     {
+        //ÏĞÎÂÅĞÈÒÜ ÏÀÑÑÈÂÍÛÉ ÓĞÎÍ Â ÍÀ×ÀËÅ ÕÎÄÀ ÄĞÓÆÅÑÒÂÅÍÍÎÉ ÅÄÅÍÈÖÛ, â ÷àñòíîñòè äæåííà îò îòğàâû
         Debug.Log(this.unit_name + " õîäèò");
         foreach (var ability in abilities)
         {

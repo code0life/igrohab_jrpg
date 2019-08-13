@@ -143,17 +143,23 @@ public class Game : MonoBehaviour
                 //Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
                 unit.OnTurnStart();
                 ability_ui.gameObject.SetActive(true);
+                //if (unit.IsUnitStatuses())
+                //{
+                //    Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
+                //    unit.StatusDamage();
+                //    yield return new WaitForSeconds(1.0f);
+                //}
+                yield return ability_ui.WaitInput(unit, good_units, evil_units, OnAbilitySelected);
                 if (unit.IsUnitStatuses())
                 {
                     Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
                     unit.StatusDamage();
                     yield return new WaitForSeconds(1.0f);
                 }
-                yield return ability_ui.WaitInput(unit, good_units, evil_units, OnAbilitySelected);
                 ability_ui.gameObject.SetActive(false);
             }
-
-      yield return new WaitForSeconds(1.0f);
+            unit.CheckCountStatus();
+            yield return new WaitForSeconds(1.0f);
 
     }
     RemoveDead();
@@ -173,7 +179,7 @@ public class Game : MonoBehaviour
         {
             Debug.Log(unit.unit_name + " ИГра говорит тчо юнит без стана, ход вычисляеца");
             AI.MakeAction(unit, evil_units, good_units);
-
+            unit.CheckCountStatus();
         }
         else
         {
@@ -184,7 +190,7 @@ public class Game : MonoBehaviour
             //unit.OnTurnStart();
             //return;
             //AI.MakeAction(unit, evil_units, good_units);
-
+            unit.CheckCountStatus();
             yield return new WaitForSeconds(1.0f);
     }
     RemoveDead();
