@@ -75,5 +75,5 @@ static public class AI
       var enemy_unit = enemy[UnityEngine.Random.Range(0, enemy.Count)];
       enemy_unit.ApplyAbility(attack_ability);
     }
-  }
+    }
 }

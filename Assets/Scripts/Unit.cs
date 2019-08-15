@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour
     public List<Ability> abilities = new List<Ability>();
     public List<Ability> statuses = new List<Ability>();
 
+    Animation anim;
     Game game;
     //UnitUI unitUI;
 
@@ -32,10 +33,11 @@ public class Unit : MonoBehaviour
 
     public void ApplyAbility(Ability ability)
     {
-        //Debug.Log("ApplyAbility - " + ability.name + " в юнита " + unit_name);
+        Debug.Log("Применяем скилл - " + ability.name + " в юнита " + unit_name);
         DamageСalculation(ability);
         CheckStatusAbility(ability);
         ability.Use();
+        //CheckCountStatus();
         UpdateUnitStatus();
     }
 
@@ -82,7 +84,7 @@ public class Unit : MonoBehaviour
                 //CheckActionTime(status_stun);
                 if (status_protection != null)
                 {
-                    Debug.Log("У юнита " + unit_name + " есть Щит, режем урон");
+                    //Debug.Log("У юнита " + unit_name + " есть Щит, режем урон");
                     if (ability.type == AbilityType.RECOVERY)
                     {
                         //Debug.Log("ПРименяется хилка, не режем урон - " + ability.name + " в юнита " + unit_name);
@@ -102,7 +104,7 @@ public class Unit : MonoBehaviour
             else
             {
                 current_hp -= ability.damage;
-                Debug.Log("У юнита " + unit_name + " нет статусов");
+                //Debug.Log("У юнита " + unit_name + " нет статусов");
 
             }
 
@@ -112,11 +114,14 @@ public class Unit : MonoBehaviour
     public void Start()
     {
         game = GameObject.Find("Game").GetComponent<Game>();
+        anim = GetComponent<Animation>();
+        //animation.Play("Evil_static");
         //unitUI = UnitUI.instance;
 
         //LoadAllAbilites();
         SetUnitAbilites();
         SetUnitHP();
+        //UpdateUnitStatus();
     }
 
     void LoadAllAbilites()
@@ -223,20 +228,25 @@ public class Unit : MonoBehaviour
         //UpdateUnitStatus();
     }
 
+    void UpdateAllUnitStatus()
+    {
+        game.DoneAllStatusNew();
+    }
+
     void UpdateUnitStatus()
     {
         //if (IsUnitStatuses())
         //{
-            Debug.Log("==========UpdateUnitStatus " + unit_name);
+            //Debug.Log("==========UpdateUnitStatus " + unit_name);
             UnitUI uUI = game.GetUnitUI(this);
             if (uUI != null)
             {
-                Debug.Log("==========UpdateUnitStatus РЕЗУЛЬТАТ" + unit_name);
+                //Debug.Log("==========UpdateUnitStatus РЕЗУЛЬТАТ" + unit_name);
                 uUI.UpdateUnitStatus();
             }
             else
             {
-                Debug.Log("==========UpdateUnitStatus ПУСТОТА" + unit_name);
+                //Debug.Log("==========UpdateUnitStatus ПУСТОТА" + unit_name);
                 uUI.UpdateUnitStatus();
             }
 
@@ -276,11 +286,11 @@ public class Unit : MonoBehaviour
 
     public void CheckCountStatus()
     {
-        Debug.Log("!!!!!!!!!!!!!!!!CheckCountStatus " + unit_name);
+        //Debug.Log("!!!!!!!!!!!!!!!!CheckCountStatus " + unit_name);
 
         if (GetStunStatus() != null)
         {
-            Debug.Log("Выполняем стан " + unit_name);
+            //Debug.Log("Выполняем стан " + unit_name);
             Ability status1 = GetStunStatus();
             //if (status1.is_new)
             //{
@@ -388,7 +398,7 @@ public class Unit : MonoBehaviour
 
     public void CheckActionTime(Ability _ability)
     {
-        Debug.Log("!!!!!!!!!!!!!!!!!!!!! CheckActionTime - " + _ability.name);
+        //Debug.Log("!!!!!!!!!!!!!!!!!!!!! CheckActionTime - " + _ability.name);
         //if (IsUnitStatuses())
         //{
         //    CheckCountStatus();
@@ -425,11 +435,12 @@ public class Unit : MonoBehaviour
             //Debug.Log(this.unit_name + " юзает абилку " + ability.name);
             ability.OnTurnStart();
         }
+        //CheckCountStatus();
     }
 
     public void OnTurnEnd()
     {
-        //ПРОВЕРИТЬ ПАССИВНЫЙ УРОН В НАЧАЛЕ ХОДА ДРУЖЕСТВЕННОЙ ЕДЕНИЦЫ, в частности дженна от отравы
+        
         Debug.Log("----------------- Конец хода - " + this.unit_name);
         //foreach (var ability in abilities)
         //{
@@ -438,6 +449,7 @@ public class Unit : MonoBehaviour
         //    ability.OnTurnStart();
         //}
         CheckCountStatus();
+        UpdateAllUnitStatus();
         UpdateUnitStatus();
     }
 

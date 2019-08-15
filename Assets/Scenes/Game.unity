@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.4964127, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -598,6 +598,16 @@ PrefabInstance:
       propertyPath: status_count
       value: 
       objectReference: {fileID: 96304364}
+    - target: {fileID: 2871789896014757610, guid: 148f67a781223469f95245a11af0ffac,
+        type: 3}
+      propertyPath: status_element
+      value: 
+      objectReference: {fileID: 845023189}
+    - target: {fileID: 2871789896014757608, guid: 148f67a781223469f95245a11af0ffac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 148f67a781223469f95245a11af0ffac, type: 3}
 --- !u!224 &692939807 stripped
@@ -606,6 +616,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 692939806}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &736495010 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8232135685473294751, guid: cccf8e5df253f48df9f2b625af6c7a7e,
+    type: 3}
+  m_PrefabInstance: {fileID: 888583748}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1a518ddded18467c8b2b4f5c5e1b0fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &767478155
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,6 +918,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recharge_info: {fileID: 767478155}
   recharge_text: {fileID: 1346741092}
+--- !u!114 &879687080 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7497629971068558565, guid: adadc4b800a1c4f1c80768bbccb55acd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2023483956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1a518ddded18467c8b2b4f5c5e1b0fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &888583748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -907,6 +941,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Evil Unit Henry
+      objectReference: {fileID: 0}
+    - target: {fileID: 8232135685473294751, guid: cccf8e5df253f48df9f2b625af6c7a7e,
+        type: 3}
+      propertyPath: name
+      value: Henry
+      objectReference: {fileID: 0}
+    - target: {fileID: 8232135685473294751, guid: cccf8e5df253f48df9f2b625af6c7a7e,
+        type: 3}
+      propertyPath: unit_name
+      value: Evil Henry
       objectReference: {fileID: 0}
     - target: {fileID: 8516993792821290308, guid: cccf8e5df253f48df9f2b625af6c7a7e,
         type: 3}
@@ -963,16 +1007,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8232135685473294751, guid: cccf8e5df253f48df9f2b625af6c7a7e,
-        type: 3}
-      propertyPath: name
-      value: Henry
-      objectReference: {fileID: 0}
-    - target: {fileID: 8232135685473294751, guid: cccf8e5df253f48df9f2b625af6c7a7e,
-        type: 3}
-      propertyPath: unit_name
-      value: Evil Henry
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cccf8e5df253f48df9f2b625af6c7a7e, type: 3}
 --- !u!1001 &897285837
@@ -986,6 +1020,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Unit Lisa
+      objectReference: {fileID: 0}
+    - target: {fileID: 7497629971068558565, guid: adadc4b800a1c4f1c80768bbccb55acd,
+        type: 3}
+      propertyPath: abilities.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7497629971068558565, guid: adadc4b800a1c4f1c80768bbccb55acd,
+        type: 3}
+      propertyPath: name
+      value: Lisa
       objectReference: {fileID: 0}
     - target: {fileID: 7782490414883217470, guid: adadc4b800a1c4f1c80768bbccb55acd,
         type: 3}
@@ -1042,16 +1086,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7497629971068558565, guid: adadc4b800a1c4f1c80768bbccb55acd,
-        type: 3}
-      propertyPath: abilities.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7497629971068558565, guid: adadc4b800a1c4f1c80768bbccb55acd,
-        type: 3}
-      propertyPath: name
-      value: Lisa
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: adadc4b800a1c4f1c80768bbccb55acd, type: 3}
 --- !u!114 &897285838 stripped
@@ -1077,6 +1111,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Evil Unit Joe
+      objectReference: {fileID: 0}
+    - target: {fileID: 8232135685473294751, guid: cccf8e5df253f48df9f2b625af6c7a7e,
+        type: 3}
+      propertyPath: name
+      value: Joe
+      objectReference: {fileID: 0}
+    - target: {fileID: 8232135685473294751, guid: cccf8e5df253f48df9f2b625af6c7a7e,
+        type: 3}
+      propertyPath: unit_name
+      value: Evil Joe
       objectReference: {fileID: 0}
     - target: {fileID: 8516993792821290308, guid: cccf8e5df253f48df9f2b625af6c7a7e,
         type: 3}
@@ -1132,16 +1176,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8232135685473294751, guid: cccf8e5df253f48df9f2b625af6c7a7e,
-        type: 3}
-      propertyPath: name
-      value: Joe
-      objectReference: {fileID: 0}
-    - target: {fileID: 8232135685473294751, guid: cccf8e5df253f48df9f2b625af6c7a7e,
-        type: 3}
-      propertyPath: unit_name
-      value: Evil Joe
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cccf8e5df253f48df9f2b625af6c7a7e, type: 3}
@@ -1369,6 +1403,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d578804ad6d6b4bbbb56aa23038c9a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1289638480 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2871789896014757608, guid: 148f67a781223469f95245a11af0ffac,
+    type: 3}
+  m_PrefabInstance: {fileID: 2871789895679273944}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &1289638481
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289638480}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 336443d64dd8b044795db307e9375cac, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1346741090
 GameObject:
   m_ObjectHideFlags: 0
@@ -1715,7 +1771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 145
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
@@ -1797,8 +1853,10 @@ MonoBehaviour:
   ability_ui: {fileID: 1228177118}
   good_units:
   - {fileID: 897285838}
+  - {fileID: 879687080}
   evil_units:
   - {fileID: 918714486}
+  - {fileID: 736495010}
   all_abilites: []
   evil_units_ui: {fileID: 1407434929}
   good_units_ui: {fileID: 657443079}
@@ -1870,7 +1928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 145
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
@@ -2011,6 +2069,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unit Jenna
       objectReference: {fileID: 0}
+    - target: {fileID: 7497629971068558565, guid: adadc4b800a1c4f1c80768bbccb55acd,
+        type: 3}
+      propertyPath: unit_name
+      value: Jenna
+      objectReference: {fileID: 0}
     - target: {fileID: 7782490414883217470, guid: adadc4b800a1c4f1c80768bbccb55acd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2065,11 +2128,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7497629971068558565, guid: adadc4b800a1c4f1c80768bbccb55acd,
-        type: 3}
-      propertyPath: unit_name
-      value: Jenna
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: adadc4b800a1c4f1c80768bbccb55acd, type: 3}
@@ -2230,6 +2288,11 @@ PrefabInstance:
       propertyPath: status_count
       value: 
       objectReference: {fileID: 1859204764}
+    - target: {fileID: 2871789896014757610, guid: 148f67a781223469f95245a11af0ffac,
+        type: 3}
+      propertyPath: status_element
+      value: 
+      objectReference: {fileID: 1012873183}
     - target: {fileID: 2871789896014757612, guid: 148f67a781223469f95245a11af0ffac,
         type: 3}
       propertyPath: m_Color.g

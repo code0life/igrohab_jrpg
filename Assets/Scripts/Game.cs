@@ -67,8 +67,9 @@ public class Game : MonoBehaviour
                 unit_ui = GameObject.Instantiate(units_ui.transform.GetChild(0).gameObject, units_ui.transform);
             unit_ui.GetComponent<UnitUI>().unit = units[i];
             var unit = units[i];
-
-            GameObject unit_status_ui;
+            unit_ui.GetComponent<UnitUI>().UpdateUnitStatus();
+            //unit_ui.gameObject.
+            ///GameObject unit_status_ui;
 
             unit_ui.GetComponent<Button>().onClick.AddListener(delegate () {
                 ability_ui.target = unit;
@@ -77,6 +78,37 @@ public class Game : MonoBehaviour
 
         for (; i < units_ui.transform.childCount; ++i)
             units_ui.transform.GetChild(i).gameObject.SetActive(false);
+    }
+
+    public void DoneAllStatusNew()
+    {
+        //Debug.Log("evil_units_ui.transform.childCount - " + evil_units_ui.transform.childCount);
+        for (int i = 0; i < good_units.Count; i++)
+        {
+            for (int j = 0; j < good_units[i].statuses.Count; j++)
+            {
+                bool is_new_ability = good_units[i].statuses[j].is_new;
+                if (is_new_ability)
+                {
+                    good_units[i].statuses[j].is_new = false;
+
+                }
+            }
+
+        }
+
+        for (int i = 0; i < evil_units.Count; i++)
+        {
+            for (int j = 0; j < evil_units[i].statuses.Count; j++)
+            {
+                bool is_new_ability = evil_units[i].statuses[j].is_new;
+                if (is_new_ability)
+                {
+                    evil_units[i].statuses[j].is_new = false;
+                }
+            }
+
+        }
     }
 
     public UnitUI GetUnitUI(Unit _unit)
@@ -142,27 +174,27 @@ public class Game : MonoBehaviour
         }
         else
         {
-                //Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
-                unit.OnTurnStart();
-                ability_ui.gameObject.SetActive(true);
-                //if (unit.IsUnitStatuses())
-                //{
-                //    Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
-                //    unit.StatusDamage();
-                //    yield return new WaitForSeconds(1.0f);
-                //}
-                yield return ability_ui.WaitInput(unit, good_units, evil_units, OnAbilitySelected);
-                if (unit.IsUnitStatuses())
-                {
-                    //Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
-                    unit.StatusDamage();
-                    yield return new WaitForSeconds(1.0f);
-                }
-                ability_ui.gameObject.SetActive(false);
+            //Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
+            unit.OnTurnStart();
+            ability_ui.gameObject.SetActive(true);
+            //if (unit.IsUnitStatuses())
+            //{
+            //    Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
+            //    unit.StatusDamage();
+            //    yield return new WaitForSeconds(1.0f);
+            //}
+            yield return ability_ui.WaitInput(unit, good_units, evil_units, OnAbilitySelected);
+            if (unit.IsUnitStatuses())
+            {
+                //Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
+                unit.StatusDamage();
+                yield return new WaitForSeconds(1.0f);
             }
-            //unit.CheckCountStatus();
-            yield return new WaitForSeconds(1.0f);
-            unit.OnTurnEnd();
+            ability_ui.gameObject.SetActive(false);
+        }
+        //unit.CheckCountStatus();
+        yield return new WaitForSeconds(1.0f);
+        unit.OnTurnEnd();
     }
 
     RemoveDead();
@@ -172,31 +204,46 @@ public class Game : MonoBehaviour
         unit.OnTurnStart();
         if (unit.IsUnitStatuses())
         {
-           // Debug.Log(unit.unit_name + " Есть статусы, анализ пассивного урона");
-            unit.StatusDamage();
-            //unit.CheckCountStatus();
-            yield return new WaitForSeconds(1.0f);
-        }
-      
-        if (unit.current_hp > 0.0f)
-        if (unit.GetStunStatus() == null)
-        {
-            //Debug.Log(unit.unit_name + " ИГра говорит тчо юнит без стана, ход вычисляеца");
-            AI.MakeAction(unit, evil_units, good_units);
-            //unit.CheckCountStatus();
+            Debug.Log(unit.unit_name + " Есть статусы, анализ пассивного урона");
+            if (unit.GetStunStatus() == null)
+            {
+                Debug.Log(unit.unit_name + " ИГра говорит тчо юнит без стана, ход вычисляеца");
+                AI.MakeAction(unit, evil_units, good_units);
+                //unit.CheckCountStatus();
+            }
+            else
+            {
+                Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
+                unit.StatusDamage();
+
+            }
+                //unit.CheckCountStatus();
+                yield return new WaitForSeconds(1.0f);
         }
         else
         {
-            //Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
-            unit.StatusDamage();
-
+            Debug.Log(unit.unit_name + " Нет статусов");
+            AI.MakeAction(unit, evil_units, good_units);
         }
+        if (unit.current_hp > 0.0f)
+        //if (unit.GetStunStatus() == null)
+        //{
+        //    Debug.Log(unit.unit_name + " ИГра говорит тчо юнит без стана, ход вычисляеца");
+        //    AI.MakeAction(unit, evil_units, good_units);
+        //    //unit.CheckCountStatus();
+        //}
+        //else
+        //{
+        //    Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
+        //    unit.StatusDamage();
+
+        //}
             //unit.OnTurnStart();
             //return;
             //AI.MakeAction(unit, evil_units, good_units);
             //unit.CheckCountStatus();
             yield return new WaitForSeconds(1.0f);
-            unit.OnTurnEnd();
+        unit.OnTurnEnd();
     }
     RemoveDead();
     is_turn_end = true;
