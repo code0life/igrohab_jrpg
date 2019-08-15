@@ -14,6 +14,8 @@ public class Ability : ScriptableObject
 
     public bool is_status;
     public AbilityType type;
+    public bool is_new;
+
     public uint duration;
 
     [NonSerialized]

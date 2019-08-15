@@ -50,7 +50,7 @@ static public class AI
 
     if(ally.Count == 0 || enemy.Count == 0 )
       return;
-    Debug.Log("MakeAction - " + unit.unit_name);
+    //Debug.Log("MakeAction - " + unit.unit_name);
     foreach (var ally_unit in ally)
     {
       var heal_ability = GetHealAbility(unit);
@@ -61,13 +61,13 @@ static public class AI
       }
     }
 
-    var stan_ability = UseBestStanAbility(unit);
-    if (stan_ability != null)
-    {
-        var enemy_unit = enemy[UnityEngine.Random.Range(0, enemy.Count)];
-        enemy_unit.ApplyAbility(stan_ability);
-        return;
-    }
+    //var stan_ability = UseBestStanAbility(unit);
+    //if (stan_ability != null)
+    //{
+    //    var enemy_unit = enemy[UnityEngine.Random.Range(0, enemy.Count)];
+    //    enemy_unit.ApplyAbility(stan_ability);
+    //    return;
+    //}
 
     var attack_ability = GetBestAttackAbility(unit);
     if(attack_ability != null)
