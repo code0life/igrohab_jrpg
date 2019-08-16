@@ -25,7 +25,7 @@ public class UnitUI : MonoBehaviour
   public GameObject status_count;
   public GameObject status_element;
 
-  Animation anim;
+  Animator anim;
 
     //public List<Ability> statuses = new List<Ability>();
 
@@ -34,8 +34,9 @@ public class UnitUI : MonoBehaviour
 
     public void Start()
     {
-        anim = GetComponent<Animation>();
-        anim.Play("Evil_static");
+        anim = GetComponent<Animator>();
+
+        anim.Play("evil_static");
     }
 
     void Update()
@@ -80,16 +81,7 @@ public class UnitUI : MonoBehaviour
                 end_status_ui = status_panel.transform.GetChild(j).gameObject;
                 end_status_ui.SetActive(true);
             }
-
-                //end_status_ui = status_panel.transform.GetChild(j).gameObject;
-                //Log(end_status_ui.gameObject.GetComponent<UnitUI>().unit.unit_name);
-                //end_status_ui.GetComponent<UnitUI>()._unit.unit_name;
-                //if (end_status_ui.GetComponent<UnitUI>()._unit == null)
-                //{
-                //    Debug.Log(end_status_ui);
-                //    Destroy(end_status_ui);
-                //}
-            }
+        }
 
         int i;
         //Debug.Log(" ============= UpdateUnitStatus - " + unit.unit_name);
@@ -103,27 +95,6 @@ public class UnitUI : MonoBehaviour
 
             if (i < status_panel.transform.childCount)
             {
-                //Debug.Log( "Есть на кого повесить - " + unit.unit_name );
- 
-                //Debug.Log( "++++++++++++++++ ");
-
-                //if (unit_status_ui.gameObject.GetComponent<UnitUI>()._unit.statuses == AbilityType.POISONING)
-                //{
-                //    unit_status_ui.GetComponent<Image>().color = Color.green;
-                //    //Debug.Log("Красим в зелёный " + unit.statuses[i].name + " объекта " + unit_status_ui.name);
-                //}
-                //else if (unit.statuses[i].type == AbilityType.PROTECTION)
-                //{
-                //    unit_status_ui.GetComponent<Image>().color = Color.blue;
-                //    //Debug.Log("Красим в синий " + unit.statuses[i].name);
-                //}
-                //else if (unit.statuses[i].type == AbilityType.STUN)
-                //{
-                //    unit_status_ui.GetComponent<Image>().color = Color.red;
-                //    //Debug.Log("Красим в красный " + unit.statuses[i].name);
-                //}
-
-                //Debug.Log("В " + unit.unit_name + _unit.statuses.Count + " статусов ");
 
                 for (int si = 0; si < _unit.statuses.Count; si++)
                 {
@@ -153,48 +124,6 @@ public class UnitUI : MonoBehaviour
                 }
                    // Debug.Log("Обновляем счетчик у " + unit.unit_name + " скилла " + unit.statuses[i].name + " на " + unit.statuses[i].duration.ToString() + " в место " + status_count.GetComponent<Text>().text);
             }
-            //else
-            //{
-            //    unit_status_ui = GameObject.Instantiate(status_element, status_panel.transform);
-            //    unit_status_ui = status_panel.transform.GetChild(i).gameObject;
-            //    unit_status_ui.SetActive(true);
-            //    status_count.GetComponent<Text>().text = unit.statuses[i].duration.ToString();
-
-            //    if (_unit.statuses[i].type == AbilityType.POISONING)
-            //    {
-            //        unit_status_ui.GetComponent<Image>().color = Color.green;
-            //    }
-            //    else if (_unit.statuses[i].type == AbilityType.PROTECTION)
-            //    {
-            //        unit_status_ui.GetComponent<Image>().color = Color.blue;
-            //        //Debug.Log("Красим в синий " + unit.statuses[i].name);
-            //    }
-            //    else if (_unit.statuses[i].type == AbilityType.STUN)
-            //    {
-            //        unit_status_ui.GetComponent<Image>().color = Color.red;
-            //        //Debug.Log("Красим в красный " + unit.statuses[i].name);
-            //    }
-
-                //UpdateUnitStatus();
-                //if (unit.statuses[i].type == AbilityType.POISONING)
-                //{
-                //    unit_status_ui.GetComponent<Image>().color = Color.green;
-                //    Debug.Log("2Красим в зелёный " + unit.statuses[i].name);
-                //}
-                //else if (unit.statuses[i].type == AbilityType.PROTECTION)
-                //{
-                //    unit_status_ui.GetComponent<Image>().color = Color.blue;
-                //    Debug.Log("2Красим в синий " + unit.statuses[i].name);
-                //}
-                //else if (unit.statuses[i].type == AbilityType.STUN)
-                //{
-                //    unit_status_ui.GetComponent<Image>().color = Color.red;
-                //    Debug.Log("2Красим в красный " + unit.statuses[i].name + " объекта " + unit_status_ui.name);
-                //}
-                ////Debug.Log("Обновляем счетчик у " + unit.unit_name + " на " + unit.statuses[i].duration.ToString());
-                ////    //unit_ui.GetComponent<UnitUI>().unit.statuses[j] = 
-                //Debug.Log("Обновляем счетчик у " + unit.unit_name + " скилла " + unit.statuses[i].name + " на " + unit.statuses[i].duration.ToString() + " в место " + status_count.GetComponent<Text>().text);
-            //}
 
         }
 
