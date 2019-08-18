@@ -6,6 +6,10 @@ using UnityEngine.UI;
 public class Game : MonoBehaviour
 {
   public AbilityUI ability_ui;
+
+  List<GameObject> goods = new List<GameObject>();
+  List<GameObject> evils = new List<GameObject>();
+
   public List<Unit> good_units = new List<Unit>();
   public List<Unit> evil_units = new List<Unit>();
 
@@ -16,6 +20,8 @@ public class Game : MonoBehaviour
 
   public GameObject mini_status_panel;
   public GameObject mini_status;
+
+  //Animations anim;
 
     bool is_turn_end = true;
   bool is_battle_end {
@@ -30,9 +36,26 @@ public class Game : MonoBehaviour
     void Start()
     {
         is_turn_end = true;
+        FindUnitAddList();
         InitUnitsUI(evil_units, evil_units_ui);
         InitUnitsUI(good_units, good_units_ui);
         
+    }
+
+    void FindUnitAddList()
+    {
+        goods.AddRange(GameObject.FindGameObjectsWithTag("hero"));
+        evils.AddRange(GameObject.FindGameObjectsWithTag("evil"));
+
+        for (int i = 0; i < goods.Count; i++)
+        {
+            good_units.Add(goods[i].gameObject.GetComponent<Unit>());
+        }
+        for (int i = 0; i < evils.Count; i++)
+        {
+            evil_units.Add(evils[i].gameObject.GetComponent<Unit>());
+        }
+
     }
 
     void LoadAllAbilites()
@@ -62,12 +85,19 @@ public class Game : MonoBehaviour
         {
             GameObject unit_ui;
             if (i < units_ui.transform.childCount)
+            {
                 unit_ui = units_ui.transform.GetChild(i).gameObject;
+                //anim.PlayAnimation(unit_ui.GetComponent<UnitUI>().unitUI, AnimationType.IDLE);
+            }
             else
                 unit_ui = GameObject.Instantiate(units_ui.transform.GetChild(0).gameObject, units_ui.transform);
             unit_ui.GetComponent<UnitUI>().unit = units[i];
             var unit = units[i];
             unit_ui.GetComponent<UnitUI>().UpdateUnitStatus();
+            //UnitUI uUI = GetUnitUI(units[i]);
+            //Debug.Log("uUI - " + unit_ui.GetComponent<UnitUI>().unit.tag);
+            unit_ui.GetComponent<Animations>().PlayAnimation(AnimationType.IDLE);
+            //anim.PlayAnimation(unit_ui.GetComponent<UnitUI>().unit, AnimationType.IDLE);
             //unit_ui.gameObject.
             ///GameObject unit_status_ui;
 

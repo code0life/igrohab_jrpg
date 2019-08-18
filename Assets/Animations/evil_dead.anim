@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: evil_static
+  m_Name: evil_dead
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -21,9 +21,13 @@ AnimationClip:
   - curve:
     - time: 0
       value: {fileID: 21300000, guid: 7f6778383d3692946abb57a35f4f5249, type: 3}
-    - time: 1
-      value: {fileID: 21300000, guid: 383975ceab9c3674b97470f52e1f410b, type: 3}
-    - time: 2
+    - time: 0.083333336
+      value: {fileID: 21300000, guid: c273a1b1b25c7ef47ac52feea6134c55, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: 7f6778383d3692946abb57a35f4f5249, type: 3}
+    - time: 0.25
+      value: {fileID: 21300000, guid: 6f8afbd3dc6a3064cb782e08fc82c0ea, type: 3}
+    - time: 0.33333334
       value: {fileID: 21300000, guid: 7f6778383d3692946abb57a35f4f5249, type: 3}
     attribute: m_Sprite
     path: 
@@ -45,19 +49,21 @@ AnimationClip:
       isPPtrCurve: 1
     pptrCurveMapping:
     - {fileID: 21300000, guid: 7f6778383d3692946abb57a35f4f5249, type: 3}
-    - {fileID: 21300000, guid: 383975ceab9c3674b97470f52e1f410b, type: 3}
+    - {fileID: 21300000, guid: c273a1b1b25c7ef47ac52feea6134c55, type: 3}
+    - {fileID: 21300000, guid: 7f6778383d3692946abb57a35f4f5249, type: 3}
+    - {fileID: 21300000, guid: 6f8afbd3dc6a3064cb782e08fc82c0ea, type: 3}
     - {fileID: 21300000, guid: 7f6778383d3692946abb57a35f4f5249, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 2.0166667
+    m_StopTime: 0.35000002
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 1
+    m_LoopTime: 0
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0
@@ -71,4 +77,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.33333334
+    functionName: SetDeadState
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

@@ -46,7 +46,7 @@ static public class AI
     }
 
     public static void MakeAction(Unit unit, List<Unit> ally, List<Unit> enemy)
-  {
+    {
 
     if(ally.Count == 0 || enemy.Count == 0 )
       return;
@@ -61,13 +61,13 @@ static public class AI
       }
     }
 
-    //var stan_ability = UseBestStanAbility(unit);
-    //if (stan_ability != null)
-    //{
-    //    var enemy_unit = enemy[UnityEngine.Random.Range(0, enemy.Count)];
-    //    enemy_unit.ApplyAbility(stan_ability);
-    //    return;
-    //}
+    var stan_ability = UseBestStanAbility(unit);
+    if (stan_ability != null)
+    {
+        var enemy_unit = enemy[UnityEngine.Random.Range(0, enemy.Count)];
+        enemy_unit.ApplyAbility(stan_ability);
+        return;
+    }
 
     var attack_ability = GetBestAttackAbility(unit);
     if(attack_ability != null)

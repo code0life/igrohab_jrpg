@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Evil Unit
       objectReference: {fileID: 0}
+    - target: {fileID: 4829463118429551748, guid: adadc4b800a1c4f1c80768bbccb55acd,
+        type: 3}
+      propertyPath: m_TagString
+      value: evil
+      objectReference: {fileID: 0}
     - target: {fileID: 7782490414883217470, guid: adadc4b800a1c4f1c80768bbccb55acd,
         type: 3}
       propertyPath: m_LocalPosition.x

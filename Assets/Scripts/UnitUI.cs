@@ -6,37 +6,55 @@ using System.Collections;
 
 public class UnitUI : MonoBehaviour
 {
-  Unit _unit;
-  public Unit unit {
-    set {
-      _unit = value;
-      prev_hp = _unit.current_hp;
+    Unit _unit;
+    public Unit unit {
+        set {
+            _unit = value;
+            prev_hp = _unit.current_hp;
+        }
+        get {
+            return _unit;
+        }
     }
-    get {
-      return _unit;
-    }
-  }
 
-  new public Text name;
-  public Text hp;
-  public Text popup;
+    //public UnitUI unitUI
+    //{
+    //    set
+    //    {
+    //    }
+    //    get
+    //    {
+    //        return this;
+    //    }
+    //}
 
-  public GameObject status_panel;
-  public GameObject status_count;
-  public GameObject status_element;
+    [Header( "Unit" ) ]
+    new public Text name;
+    public Text hp;
+    public Text popup;
+    public float prev_hp = -1;
 
-  Animator anim;
+    [Header("Unit Statuses")]
+
+    public GameObject status_panel;
+    public GameObject status_count;
+    public GameObject status_element;
+
+    Animations anim;
+
+    [Header("Unit Health Bar")]
+    public Image health_bar;
 
     //public List<Ability> statuses = new List<Ability>();
 
 
-    public float prev_hp = -1;
+
 
     public void Start()
     {
-        anim = GetComponent<Animator>();
-
-        anim.Play("evil_static");
+        //anim = GetComponent<Animator>();
+        //anim.PlayAnimation(this, AnimationType.IDLE);
+        //anim.Play("evil_static");
     }
 
     void Update()
@@ -52,12 +70,24 @@ public class UnitUI : MonoBehaviour
       prev_hp = unit.current_hp;
     }
 
-    if(unit.current_hp <= 0.0f)
-      gameObject.SetActive(false);
+    //if(unit.current_hp <= 0.0f)
+    //  gameObject.SetActive(false);
 
     name.text = unit.unit_name;
-    hp.text = $"HP: {unit.current_hp}/{unit.max_hp}";
+    hp.text = $"{unit.current_hp}/{unit.max_hp}";
   }
+
+    public void SetDeadState()
+    {
+        if(unit.current_hp <= 0.0f)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            gameObject.SetActive(true);
+        }
+    }
 
     public void UpdateUnitStatus()
     {
@@ -102,7 +132,6 @@ public class UnitUI : MonoBehaviour
 
                     unit_status_ui = status_panel.transform.GetChild(si).gameObject;
                     unit_status_ui.SetActive(true);
-
                     unit_status_ui.GetComponentInChildren<Text>().text = unit_status_ui.GetComponentInParent<UnitUI>()._unit.statuses[si].duration.ToString();
 
                     //Debug.Log("unit_status_ui.GetComponentInParent<UnitUI>()._unit.statuses[si].type - " + unit_status_ui.GetComponentInParent<UnitUI>()._unit.statuses[si].type);
@@ -130,14 +159,14 @@ public class UnitUI : MonoBehaviour
     }
 
     void ShowDamage(float damage)
-  {
-    var new_popup = Text.Instantiate(popup, popup.transform.parent);
-    new_popup.text = $"{-damage}";
-    if(damage > 0)
-      new_popup.color = Color.red;
-    else
-      new_popup.color = Color.green;
-    new_popup.gameObject.AddComponent<PopupText>();
-    new_popup.gameObject.SetActive(true);
-  }
+    {
+        var new_popup = Text.Instantiate(popup, popup.transform.parent);
+        new_popup.text = $"{-damage}";
+        if(damage > 0)
+            new_popup.color = Color.red;
+        else
+            new_popup.color = Color.green;
+        new_popup.gameObject.AddComponent<PopupText>();
+        new_popup.gameObject.SetActive(true);
+    }
 }

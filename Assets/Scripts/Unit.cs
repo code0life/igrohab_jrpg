@@ -12,7 +12,7 @@ public class Unit : MonoBehaviour
     public List<Ability> abilities = new List<Ability>();
     public List<Ability> statuses = new List<Ability>();
 
-    Animation anim;
+    Animations anim;
     Game game;
     //UnitUI unitUI;
 
@@ -39,28 +39,50 @@ public class Unit : MonoBehaviour
         ability.Use();
         //CheckCountStatus();
         UpdateUnitStatus();
+        CheckHealthUnit();
+
+    }
+
+    public void CheckHealthUnit()
+    {
+        UnitUI uUI = game.GetUnitUI(this);
+
+        if (_current_hp <= 0.0f)
+        {
+            Debug.Log( "юнит " + unit_name + " МЕРТВ !");
+            uUI.GetComponent<Animations>().PlayAnimation(AnimationType.DEAD);
+        }
+        else
+        {
+            Debug.Log("юнит " + unit_name + " ЖИВ !");
+            if (GetStunStatus() == null)
+            {
+                uUI.GetComponent<Animations>().PlayAnimation(AnimationType.IDLE);
+            }
+
+
+        }
+        UpdateHealthBar();
+    }
+
+    void UpdateHealthBar()
+    {
+        UnitUI uUI = game.GetUnitUI(this);
+        if (uUI == null)
+        {
+            return;
+        }
+        uUI.health_bar.fillAmount = _current_hp / max_hp;
     }
 
     public void DamageСalculation(Ability ability)
     {
-        //Debug.Log("DamageСalculation - " + ability.name + " в юнита " + unit_name);
-        //if (IsUnitStatuses())
-        //{
-        //    Debug.Log("У юнита " + unit_name + " есть статусы");
-        //    DamageUnit(ability);
-        //}
-        //else
-        //{
         DamageUnit(ability);
-        //    Debug.Log("У юнита " + unit_name + " нет статусов");
-
-        //}
-        //Debug.Log("DamageСalculation - " + ability.damage);
-        //current_hp -= ability.damage;
     }
 
     void DamageUnit(Ability ability)
     {
+        UnitUI uUI = game.GetUnitUI(this);
 
         if (ability.type == AbilityType.PROTECTION)
         {
@@ -69,6 +91,7 @@ public class Unit : MonoBehaviour
         else if (ability.type == AbilityType.STUN)
         {
             Debug.Log("Накладывает стан - " + ability.name + " в юнита " + unit_name + "Дамаг не выщитывается");
+            uUI.GetComponent<Animations>().PlayAnimation(AnimationType.STUN);
         }
         else if (ability.type == AbilityType.POISONING)
         {
@@ -76,6 +99,7 @@ public class Unit : MonoBehaviour
         }
         else
         {
+
             if (IsUnitStatuses())
             {
                 //Debug.Log("У юнита " + unit_name + " есть статусы");
@@ -87,7 +111,7 @@ public class Unit : MonoBehaviour
                     //Debug.Log("У юнита " + unit_name + " есть Щит, режем урон");
                     if (ability.type == AbilityType.RECOVERY)
                     {
-                        //Debug.Log("ПРименяется хилка, не режем урон - " + ability.name + " в юнита " + unit_name);
+                        Debug.Log("ПРименяется хилка, не режем урон - " + ability.name + " в юнита " + unit_name);
                         current_hp -= ability.damage;
                     }
                     else
@@ -109,17 +133,26 @@ public class Unit : MonoBehaviour
             }
 
         }
+        //UpdateHealthBar();
     }
 
     public void Start()
     {
         game = GameObject.Find("Game").GetComponent<Game>();
-        anim = GetComponent<Animation>();
+
+        //UnitUI uUI = game.GetUnitUI(this);
+        //if (uUI != null)
+        //{
+        //    anim.PlayAnimation(uUI, AnimationType.IDLE);
+
+        //}
+        //anim = GetComponent<Animation>();
         //animation.Play("Evil_static");
         //unitUI = UnitUI.instance;
 
         //LoadAllAbilites();
-        SetUnitAbilites();
+        //SetUnitAbilites();
+        SetAllUnitAbilites();
         SetUnitHP();
         //UpdateUnitStatus();
     }
@@ -128,6 +161,15 @@ public class Unit : MonoBehaviour
     {
         //abilities = new List<Ability>(Resources.LoadAll<Ability>("Abilites"));
         //Debug.Log(abilities.Count);
+    }
+
+    void SetAllUnitAbilites()
+    {
+        for (int i = 0; i<game.all_abilites.Count; ++i)
+        {
+            Ability ability = GameObject.Instantiate(game.all_abilites[i]);
+            abilities.Add(ability);
+        }
     }
 
     Ability GetPoisonStatus()
@@ -202,26 +244,36 @@ public class Unit : MonoBehaviour
 
     void AddUnitStatus(Ability _status)
     {
-        Ability status = GameObject.Instantiate(_status);
-        Ability find_status = null;
+        Debug.Log("AddUnitStatus - " + _status.name);
+        int index_status = 0;
+        bool find_index_status = false;
 
+        int i = 0;
         foreach (Ability find in statuses)
         {
             if (find.name == _status.name)
             {
-                find_status = find;
+                index_status = i;
+                find_index_status = true;
                 break;
             }
-                
+            i++;
         }
 
-        if (find_status == null)
+        if (!find_index_status)
         {
+            Debug.Log("AddUnitStatus NEW - " + _status.name);
+            Ability status = GameObject.Instantiate(_status);
             statuses.Add(status);
         }
         else
         {
-            find_status.cooldown = _status.cooldown;
+            Debug.Log("AddUnitStatus ADD - " + _status.name);
+            //Debug.Log("index_status ADD - " + index_status);
+            //Debug.Log("statuses[index_status].cooldown - " + statuses[index_status].cooldown);
+            //Debug.Log("_status.cooldown - " + _status.cooldown);
+            statuses[index_status].duration = _status.duration;
+            //statuses[index_status].cooldown = _status.cooldown;
         }
 
         //Debug.Log( "Перейдём в обновлении статуса у игрока " + unit_name );
@@ -261,11 +313,77 @@ public class Unit : MonoBehaviour
 
     void SetUnitAbilites()
     {
+        Ability kick_ability = GetUnitKickAbility();
+
+        if (kick_ability == null)
+        {
+            return;
+        }
+        else
+        {
+            abilities.Add(kick_ability);
+        }
+
+
+        SetTwoUnitAbilites();
+
+    }
+
+    void SetTwoUnitAbilites()
+    {
+        Ability random_ability_one = GetRndAbility();
+
+        if (random_ability_one.name != "Kick")
+        {
+            Debug.Log( name + " скил 2 найден" );
+            //abilities.Add(random_ability_one);
+        }
+        else
+        {
+            Debug.Log(name + " второй ошибка .рестарт");
+            //abilities.Clear();
+            SetTwoUnitAbilites();
+            return;
+        }
+
+        Ability random_ability_two = GetRndAbility();
+
+        if (random_ability_two != null && random_ability_two != random_ability_one && random_ability_two.name != "Kick")
+        {
+            Debug.Log(name + " скилл 3 найден");
+            Debug.Log(name + " ЗАПИСЫВАЕМ 2 СКИЛЛА");
+            abilities.Add(random_ability_one);
+            abilities.Add(random_ability_two);
+        }
+        else
+        {
+            Debug.Log(name + " третий ошибка .рестарт");
+            abilities.Clear();
+            SetUnitAbilites();
+        }
+
+    }
+
+    Ability GetRndAbility()
+    {
+        Ability rnd_ability = game.all_abilites[UnityEngine.Random.Range(0, game.all_abilites.Count)];
+        return rnd_ability;
+    }
+
+    Ability GetUnitKickAbility()
+    {
         for (int i = 0; i < game.all_abilites.Count; ++i)
         {
-            Ability ability = GameObject.Instantiate(game.all_abilites[i]);
-            abilities.Add(ability);
+            if (game.all_abilites[i].name == "Kick")
+            {
+                Ability ability = GameObject.Instantiate(game.all_abilites[i]);
+                return ability;
+            }
+
         }
+
+        return null;
+
     }
 
     void SetUnitHP()
@@ -440,7 +558,7 @@ public class Unit : MonoBehaviour
 
     public void OnTurnEnd()
     {
-        
+        UnitUI uUI = game.GetUnitUI(this);
         Debug.Log("----------------- Конец хода - " + this.unit_name);
         //foreach (var ability in abilities)
         //{
@@ -451,6 +569,7 @@ public class Unit : MonoBehaviour
         CheckCountStatus();
         UpdateAllUnitStatus();
         UpdateUnitStatus();
+        CheckHealthUnit();
     }
 
 }
