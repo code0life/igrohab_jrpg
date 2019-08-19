@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 static public class AI
 {
+
   static Ability GetHealAbility(Unit unit)
   {
     foreach(var ability in unit.abilities)
@@ -56,7 +57,7 @@ static public class AI
       var heal_ability = GetHealAbility(unit);
       if(heal_ability != null && ally_unit.current_hp < ally_unit.max_hp / 2)
       {
-        ally_unit.ApplyAbility(heal_ability);
+        ally_unit.ApplyAbility(heal_ability, unit);
         return;
       }
     }
@@ -65,15 +66,16 @@ static public class AI
     if (stan_ability != null)
     {
         var enemy_unit = enemy[UnityEngine.Random.Range(0, enemy.Count)];
-        enemy_unit.ApplyAbility(stan_ability);
-        return;
+        enemy_unit.ApplyAbility(stan_ability, unit);
+            return;
     }
 
     var attack_ability = GetBestAttackAbility(unit);
     if(attack_ability != null)
     {
       var enemy_unit = enemy[UnityEngine.Random.Range(0, enemy.Count)];
-      enemy_unit.ApplyAbility(attack_ability);
-    }
+      enemy_unit.ApplyAbility(attack_ability, unit);
+
+        }
     }
 }

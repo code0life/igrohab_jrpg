@@ -6,14 +6,20 @@ using System;
 
 public class Unit : MonoBehaviour
 {
+    [Header("Unit")]
     public string unit_name;
     public float max_hp;
 
+    [Header("Abilities")]
     public List<Ability> abilities = new List<Ability>();
+
+    [Header("Statuses")]
     public List<Ability> statuses = new List<Ability>();
 
     Animations anim;
     Game game;
+    Director boss;
+
     //UnitUI unitUI;
 
     float _current_hp;
@@ -31,7 +37,7 @@ public class Unit : MonoBehaviour
     }
     List<Ability> available_abilities = new List<Ability>();
 
-    public void ApplyAbility(Ability ability)
+    public void ApplyAbility(Ability ability, Unit _unit)
     {
         Debug.Log("Ïğèìåíÿåì ñêèëë - " + ability.name + " â şíèòà " + unit_name);
         DamageÑalculation(ability);
@@ -40,7 +46,7 @@ public class Unit : MonoBehaviour
         //CheckCountStatus();
         UpdateUnitStatus();
         CheckHealthUnit();
-
+        boss.ShowMessage(ability, _unit, this );
     }
 
     public void CheckHealthUnit()
@@ -139,7 +145,7 @@ public class Unit : MonoBehaviour
     public void Start()
     {
         game = GameObject.Find("Game").GetComponent<Game>();
-
+        boss = GameObject.Find("Director").GetComponent<Director>();
         //UnitUI uUI = game.GetUnitUI(this);
         //if (uUI != null)
         //{

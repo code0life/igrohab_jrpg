@@ -5,15 +5,19 @@ using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
-  public AbilityUI ability_ui;
-
+  [Header("Lists GameObjects")]
   List<GameObject> goods = new List<GameObject>();
   List<GameObject> evils = new List<GameObject>();
 
+  [Header("Lists Units")]
   public List<Unit> good_units = new List<Unit>();
   public List<Unit> evil_units = new List<Unit>();
 
+  [Header("List All Ability")]
   public List<Ability> all_abilites = new List<Ability>();
+
+  [Header("Unit UI")]
+  public AbilityUI ability_ui;
 
   public GameObject evil_units_ui;
   public GameObject good_units_ui;
@@ -21,7 +25,8 @@ public class Game : MonoBehaviour
   public GameObject mini_status_panel;
   public GameObject mini_status;
 
-  //Animations anim;
+  [Header("GameObject Director")]
+  public GameObject boss;
 
     bool is_turn_end = true;
   bool is_battle_end {
@@ -189,12 +194,13 @@ public class Game : MonoBehaviour
   public IEnumerator Turn()
   {
     is_turn_end = false;
-    foreach(var unit in good_units)
+    foreach (var unit in good_units)
     {
         if (unit.GetStunStatus() != null)
         {
             //Debug.Log(unit.unit_name + " ИГра говорит что гирок под станом, идёт подсчет статусов и пропуск хода");
             unit.OnTurnStart();
+            //boss.GetComponent<Button>().interactable = true;
             if (unit.IsUnitStatuses())
             {
                 //Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
@@ -206,7 +212,9 @@ public class Game : MonoBehaviour
         {
             //Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
             unit.OnTurnStart();
+            boss.GetComponent<Button>().interactable = true;
             ability_ui.gameObject.SetActive(true);
+
             //if (unit.IsUnitStatuses())
             //{
             //    Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
@@ -214,6 +222,7 @@ public class Game : MonoBehaviour
             //    yield return new WaitForSeconds(1.0f);
             //}
             yield return ability_ui.WaitInput(unit, good_units, evil_units, OnAbilitySelected);
+            //boss.GetComponent<Button>().interactable = false;
             if (unit.IsUnitStatuses())
             {
                 //Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
@@ -221,7 +230,8 @@ public class Game : MonoBehaviour
                 yield return new WaitForSeconds(1.0f);
             }
             ability_ui.gameObject.SetActive(false);
-        }
+                boss.GetComponent<Button>().interactable = false;
+            }
         //unit.CheckCountStatus();
         yield return new WaitForSeconds(1.0f);
         unit.OnTurnEnd();
@@ -249,7 +259,8 @@ public class Game : MonoBehaviour
             }
                 //unit.CheckCountStatus();
                 yield return new WaitForSeconds(1.0f);
-        }
+                //boss.GetComponent<Button>().interactable = true;
+            }
         else
         {
             Debug.Log(unit.unit_name + " Нет статусов");
@@ -278,7 +289,8 @@ public class Game : MonoBehaviour
     RemoveDead();
     is_turn_end = true;
     yield return null;
-  }
+
+    }
 
   void RemoveDead()
   {

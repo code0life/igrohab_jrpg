@@ -72,7 +72,7 @@ public class AbilityUI : MonoBehaviour
       }
     }
 
-    target.ApplyAbility(selected);
+    target.ApplyAbility(selected, unit);
     on_selected(null);
   }
 
