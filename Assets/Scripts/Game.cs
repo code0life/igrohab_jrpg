@@ -5,46 +5,50 @@ using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
-  [Header("Lists GameObjects")]
-  List<GameObject> goods = new List<GameObject>();
-  List<GameObject> evils = new List<GameObject>();
 
-  [Header("Lists Units")]
-  public List<Unit> good_units = new List<Unit>();
-  public List<Unit> evil_units = new List<Unit>();
+    Interface intWindow;
 
-  [Header("List All Ability")]
-  public List<Ability> all_abilites = new List<Ability>();
+    [Header("Lists GameObjects")]
+    List<GameObject> goods = new List<GameObject>();
+    List<GameObject> evils = new List<GameObject>();
 
-  [Header("Unit UI")]
-  public AbilityUI ability_ui;
+    [Header("Lists Units")]
+    public List<Unit> good_units = new List<Unit>();
+    public List<Unit> evil_units = new List<Unit>();
 
-  public GameObject evil_units_ui;
-  public GameObject good_units_ui;
+    [Header("List All Ability")]
+    public List<Ability> all_abilites = new List<Ability>();
 
-  public GameObject mini_status_panel;
-  public GameObject mini_status;
+    [Header("Unit UI")]
+    public AbilityUI ability_ui;
 
-  [Header("GameObject Director")]
-  public GameObject boss;
+    public GameObject evil_units_ui;
+    public GameObject good_units_ui;
+
+    public GameObject mini_status_panel;
+    public GameObject mini_status;
+
+    [Header("GameObject Director")]
+    public GameObject boss;
 
     bool is_turn_end = true;
-  bool is_battle_end {
-    get {
-      return good_units.Count == 0 || evil_units.Count == 0;
+    bool is_battle_end {
+        get {
+            return good_units.Count == 0 || evil_units.Count == 0;
+        }
     }
-  }
     void Awake()
     {
         LoadAllAbilites();
     }
     void Start()
     {
+        intWindow = GameObject.Find("Interface").GetComponent<Interface>();
         is_turn_end = true;
         FindUnitAddList();
         InitUnitsUI(evil_units, evil_units_ui);
         InitUnitsUI(good_units, good_units_ui);
-        
+
     }
 
     void FindUnitAddList()
@@ -69,18 +73,18 @@ public class Game : MonoBehaviour
     }
 
     void MarkUnit(GameObject units_ui, Ability ability, System.Func<float, bool> check)
-  {
-    for(int i = 0; i < units_ui.transform.childCount; ++i)
     {
-      var unit_ui = units_ui.transform.GetChild(i).gameObject;
+        for (int i = 0; i < units_ui.transform.childCount; ++i)
+        {
+            var unit_ui = units_ui.transform.GetChild(i).gameObject;
             //Debug.Log(unit_ui.name);
-      if(!unit_ui.activeSelf)
-        continue;
+            if (!unit_ui.activeSelf)
+                continue;
 
-      var unit_ui_button = unit_ui.GetComponent<Button>();
-      unit_ui_button.interactable = ability == null || check(ability.damage);
+            var unit_ui_button = unit_ui.GetComponent<Button>();
+            unit_ui_button.interactable = ability == null || check(ability.damage);
+        }
     }
-  }
 
     void InitUnitsUI(List<Unit> units, GameObject units_ui)
     {
@@ -173,13 +177,13 @@ public class Game : MonoBehaviour
     }
 
     public void Update()
-  {
-    if(is_turn_end && !is_battle_end)
-      StartCoroutine(Turn());
-  }
+    {
+        if (is_turn_end && !is_battle_end)
+            StartCoroutine(Turn());
+    }
 
-  void OnAbilitySelected(Ability selected)
-  {
+    void OnAbilitySelected(Ability selected)
+    {
         //if (selected != null)
         //{
         //    Debug.Log("OnAbilitySelected - " + selected.name);
@@ -191,112 +195,150 @@ public class Game : MonoBehaviour
 
     }
 
-  public IEnumerator Turn()
-  {
-    is_turn_end = false;
-    foreach (var unit in good_units)
+    public IEnumerator Turn()
     {
-        if (unit.GetStunStatus() != null)
+        is_turn_end = false;
+        foreach (var unit in good_units)
         {
-            //Debug.Log(unit.unit_name + " ИГра говорит что гирок под станом, идёт подсчет статусов и пропуск хода");
-            unit.OnTurnStart();
-            //boss.GetComponent<Button>().interactable = true;
-            if (unit.IsUnitStatuses())
+            if (unit.GetStunStatus() != null)
             {
-                //Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
-                unit.StatusDamage();
-                yield return new WaitForSeconds(1.0f);
-            }
-        }
-        else
-        {
-            //Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
-            unit.OnTurnStart();
-            boss.GetComponent<Button>().interactable = true;
-            ability_ui.gameObject.SetActive(true);
+                //Debug.Log(unit.unit_name + " ИГра говорит что гирок под станом, идёт подсчет статусов и пропуск хода");
+                unit.OnTurnStart();
+                //boss.GetComponent<Button>().interactable = true;
+                if (unit.IsUnitStatuses())
+                {
+                    //Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
+                    unit.StatusDamage();
+                    yield return new WaitForSeconds(1.0f);
+                    //if (GameIsEnd())
+                    //{
+                    //    StopCoroutine(Turn());
+                    //    intWindow.ShowWindow();
 
-            //if (unit.IsUnitStatuses())
-            //{
-            //    Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
-            //    unit.StatusDamage();
-            //    yield return new WaitForSeconds(1.0f);
-            //}
-            yield return ability_ui.WaitInput(unit, good_units, evil_units, OnAbilitySelected);
-            //boss.GetComponent<Button>().interactable = false;
-            if (unit.IsUnitStatuses())
-            {
-                //Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
-                unit.StatusDamage();
-                yield return new WaitForSeconds(1.0f);
-            }
-            ability_ui.gameObject.SetActive(false);
-                boss.GetComponent<Button>().interactable = false;
-            }
-        //unit.CheckCountStatus();
-        yield return new WaitForSeconds(1.0f);
-        unit.OnTurnEnd();
-    }
-
-    RemoveDead();
-    foreach(var unit in evil_units)
-    {
-
-        unit.OnTurnStart();
-        if (unit.IsUnitStatuses())
-        {
-            Debug.Log(unit.unit_name + " Есть статусы, анализ пассивного урона");
-            if (unit.GetStunStatus() == null)
-            {
-                Debug.Log(unit.unit_name + " ИГра говорит тчо юнит без стана, ход вычисляеца");
-                AI.MakeAction(unit, evil_units, good_units);
-                //unit.CheckCountStatus();
+                    //}
+                }
             }
             else
             {
-                Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
-                unit.StatusDamage();
+                //Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
+                unit.OnTurnStart();
+                boss.GetComponent<Button>().interactable = true;
+                ability_ui.gameObject.SetActive(true);
+
+                //if (unit.IsUnitStatuses())
+                //{
+                //    Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
+                //    unit.StatusDamage();
+                //    yield return new WaitForSeconds(1.0f);
+                //}
+                yield return ability_ui.WaitInput(unit, good_units, evil_units, OnAbilitySelected);
+                //boss.GetComponent<Button>().interactable = false;
+                if (unit.IsUnitStatuses())
+                {
+                    //Debug.Log(unit.unit_name + " Есть статусы у игрока, анализ пассивного урона");
+                    unit.StatusDamage();
+                    yield return new WaitForSeconds(1.0f);
+                }
+                ability_ui.gameObject.SetActive(false);
+                boss.GetComponent<Button>().interactable = false;
+            }
+            RemoveDead();
+            if (GameIsEnd())
+            {
+                StopCoroutine(Turn());
+                intWindow.ShowWindow();
 
             }
+            yield return new WaitForSeconds(1.0f);
+            unit.OnTurnEnd();
+
+        }
+
+        RemoveDead();
+        if (GameIsEnd())
+        {
+            StopCoroutine(Turn());
+            intWindow.ShowWindow();
+
+        }
+        foreach (var unit in evil_units)
+        {
+
+            unit.OnTurnStart();
+            if (unit.IsUnitStatuses())
+            {
+                Debug.Log(unit.unit_name + " Есть статусы, анализ пассивного урона");
+                if (unit.GetStunStatus() == null)
+                {
+                    Debug.Log(unit.unit_name + " ИГра говорит тчо юнит без стана, ход вычисляеца");
+                    AI.MakeAction(unit, evil_units, good_units);
+                    //unit.CheckCountStatus();
+                }
+                else
+                {
+                    Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
+                    unit.StatusDamage();
+
+                }
                 //unit.CheckCountStatus();
                 yield return new WaitForSeconds(1.0f);
                 //boss.GetComponent<Button>().interactable = true;
             }
-        else
-        {
-            Debug.Log(unit.unit_name + " Нет статусов");
-            AI.MakeAction(unit, evil_units, good_units);
+            else
+            {
+                Debug.Log(unit.unit_name + " Нет статусов");
+                AI.MakeAction(unit, evil_units, good_units);
+            }
+            if (unit.current_hp > 0.0f)
+                //if (unit.GetStunStatus() == null)
+                //{
+                //    Debug.Log(unit.unit_name + " ИГра говорит тчо юнит без стана, ход вычисляеца");
+                //    AI.MakeAction(unit, evil_units, good_units);
+                //    //unit.CheckCountStatus();
+                //}
+                //else
+                //{
+                //    Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
+                //    unit.StatusDamage();
+
+                //}
+                //unit.OnTurnStart();
+                //return;
+                //AI.MakeAction(unit, evil_units, good_units);
+                //unit.CheckCountStatus();
+                yield return new WaitForSeconds(1.0f);
+            unit.OnTurnEnd();
         }
-        if (unit.current_hp > 0.0f)
-        //if (unit.GetStunStatus() == null)
-        //{
-        //    Debug.Log(unit.unit_name + " ИГра говорит тчо юнит без стана, ход вычисляеца");
-        //    AI.MakeAction(unit, evil_units, good_units);
-        //    //unit.CheckCountStatus();
-        //}
-        //else
-        //{
-        //    Debug.Log(unit.unit_name + " ИГра говорит тчо юнит СО СТАНОМ, ход не вычисляеца, но рассчитывается дамаг по статусам");
-        //    unit.StatusDamage();
+        RemoveDead();
+        if (GameIsEnd())
+        {
+            StopCoroutine(Turn());
+            intWindow.ShowWindow();
 
-        //}
-            //unit.OnTurnStart();
-            //return;
-            //AI.MakeAction(unit, evil_units, good_units);
-            //unit.CheckCountStatus();
-            yield return new WaitForSeconds(1.0f);
-        unit.OnTurnEnd();
-    }
-    RemoveDead();
-    is_turn_end = true;
-    yield return null;
+        }
+        is_turn_end = true;
+        yield return null;
 
     }
 
-  void RemoveDead()
-  {
-    good_units.RemoveAll(unit => unit.current_hp <= 0.0f);
-    evil_units.RemoveAll(unit => unit.current_hp <= 0.0f);
-  }
+    void RemoveDead()
+    {
+        good_units.RemoveAll(unit => unit.current_hp <= 0.0f);
+        evil_units.RemoveAll(unit => unit.current_hp <= 0.0f);
+
+    }
+
+    bool GameIsEnd()
+    {
+        Debug.Log("GameIsEnd");
+        Debug.Log("good_units.Count - " + good_units.Count);
+        Debug.Log("evil_units.Count - " + evil_units.Count);
+        if (good_units.Count == 0 || evil_units.Count == 0)
+        {
+            return true;
+        }
+        return false;
+    }
 }
 
 public enum AbilityType

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Animations : MonoBehaviour
 {
-    Game game;
+    //Game game;
     Unit unit;
 
     public AnimationType current_animation;
