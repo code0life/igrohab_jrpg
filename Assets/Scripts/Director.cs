@@ -106,10 +106,27 @@ public class Director : MonoBehaviour
 
     }
 
+    public void ShowWinMessage()
+    {
+        text_history2.GetComponent<Text>().text = null;
+        text_history1.GetComponent<Text>().text = null;
+        text_current.GetComponent<Text>().text = "You defeated stupid bots. Are you happy now?";
+
+    }
+
+    public void ShowLoseMessage()
+    {
+        text_history2.GetComponent<Text>().text = null;
+        text_history1.GetComponent<Text>().text = null;
+        text_current.GetComponent<Text>().text = "You lose. It happens to everyone. Have some tea.";
+
+    }
+
     IEnumerator TextCoroutine(string _text)
     {
         yield return new WaitForSeconds(1.0f);
         text_current.GetComponent<Text>().text = _text;
         boss.GetComponent<Button>().interactable = true;
     }
+
 }

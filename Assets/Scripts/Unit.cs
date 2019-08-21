@@ -39,11 +39,9 @@ public class Unit : MonoBehaviour
 
     public void ApplyAbility(Ability ability, Unit _unit)
     {
-        Debug.Log("Применяем скилл - " + ability.name + " в юнита " + unit_name);
         DamageСalculation(ability);
         CheckStatusAbility(ability);
         ability.Use();
-        //CheckCountStatus();
         UpdateUnitStatus();
         CheckHealthUnit();
         boss.ShowMessage(ability, _unit, this );
@@ -55,18 +53,14 @@ public class Unit : MonoBehaviour
 
         if (_current_hp <= 0.0f)
         {
-            Debug.Log( "юнит " + unit_name + " МЕРТВ !");
             uUI.GetComponent<Animations>().PlayAnimation(AnimationType.DEAD);
         }
         else
         {
-            Debug.Log("юнит " + unit_name + " ЖИВ !");
             if (GetStunStatus() == null)
             {
                 uUI.GetComponent<Animations>().PlayAnimation(AnimationType.IDLE);
             }
-
-
         }
         UpdateHealthBar();
     }
@@ -92,32 +86,25 @@ public class Unit : MonoBehaviour
 
         if (ability.type == AbilityType.PROTECTION)
         {
-            Debug.Log("Накладывает щит - " + ability.name + " в юнита " + unit_name + "Дамаг не выщитывается");
         }
         else if (ability.type == AbilityType.STUN)
         {
-            Debug.Log("Накладывает стан - " + ability.name + " в юнита " + unit_name + "Дамаг не выщитывается");
             uUI.GetComponent<Animations>().PlayAnimation(AnimationType.STUN);
         }
         else if (ability.type == AbilityType.POISONING)
         {
-            Debug.Log("Накладывает отравление - " + ability.name + " в юнита " + unit_name + "Дамаг не выщитывается");
         }
         else
         {
 
             if (IsUnitStatuses())
             {
-                //Debug.Log("У юнита " + unit_name + " есть статусы");
-
                 Ability status_protection = GetProtectionStatus();
-                //CheckActionTime(status_stun);
+
                 if (status_protection != null)
                 {
-                    //Debug.Log("У юнита " + unit_name + " есть Щит, режем урон");
                     if (ability.type == AbilityType.RECOVERY)
                     {
-                        Debug.Log("ПРименяется хилка, не режем урон - " + ability.name + " в юнита " + unit_name);
                         current_hp -= ability.damage;
                     }
                     else
@@ -134,39 +121,18 @@ public class Unit : MonoBehaviour
             else
             {
                 current_hp -= ability.damage;
-                //Debug.Log("У юнита " + unit_name + " нет статусов");
-
             }
 
         }
-        //UpdateHealthBar();
     }
 
     public void Start()
     {
         game = GameObject.Find("Game").GetComponent<Game>();
         boss = GameObject.Find("Director").GetComponent<Director>();
-        //UnitUI uUI = game.GetUnitUI(this);
-        //if (uUI != null)
-        //{
-        //    anim.PlayAnimation(uUI, AnimationType.IDLE);
 
-        //}
-        //anim = GetComponent<Animation>();
-        //animation.Play("Evil_static");
-        //unitUI = UnitUI.instance;
-
-        //LoadAllAbilites();
-        //SetUnitAbilites();
         SetAllUnitAbilites();
         SetUnitHP();
-        //UpdateUnitStatus();
-    }
-
-    void LoadAllAbilites()
-    {
-        //abilities = new List<Ability>(Resources.LoadAll<Ability>("Abilites"));
-        //Debug.Log(abilities.Count);
     }
 
     void SetAllUnitAbilites()
@@ -183,7 +149,6 @@ public class Unit : MonoBehaviour
         for (int i = 0; i < statuses.Count; ++i)
         {
             Ability status_poison = statuses[i];
-            //Debug.Log(status_poison.type);
             if (status_poison.type == AbilityType.POISONING)
             {
                 return status_poison;
@@ -198,7 +163,6 @@ public class Unit : MonoBehaviour
         for (int i = 0; i < statuses.Count; ++i)
         {
             Ability status_protection = statuses[i];
-            //Debug.Log(status_poison.type);
             if (status_protection.type == AbilityType.PROTECTION)
             {
                 return status_protection;
@@ -213,7 +177,6 @@ public class Unit : MonoBehaviour
         for (int i = 0; i < statuses.Count; ++i)
         {
             Ability status_stun = statuses[i];
-            //Debug.Log(status_stun.type);
             if (status_stun.type == AbilityType.STUN)
             {
                 return status_stun;
@@ -232,14 +195,6 @@ public class Unit : MonoBehaviour
         return false;
     }
 
-    void CheckUnitStatuses()
-    {
-        //if (_ability.is_status)
-        //{
-        //    AddUnitStatus(_ability);
-        //}
-    }
-
     void CheckStatusAbility(Ability _ability)
     {
         if (_ability.is_status)
@@ -250,11 +205,10 @@ public class Unit : MonoBehaviour
 
     void AddUnitStatus(Ability _status)
     {
-        Debug.Log("AddUnitStatus - " + _status.name);
         int index_status = 0;
         bool find_index_status = false;
-
         int i = 0;
+
         foreach (Ability find in statuses)
         {
             if (find.name == _status.name)
@@ -268,22 +222,13 @@ public class Unit : MonoBehaviour
 
         if (!find_index_status)
         {
-            Debug.Log("AddUnitStatus NEW - " + _status.name);
             Ability status = GameObject.Instantiate(_status);
             statuses.Add(status);
         }
         else
         {
-            Debug.Log("AddUnitStatus ADD - " + _status.name);
-            //Debug.Log("index_status ADD - " + index_status);
-            //Debug.Log("statuses[index_status].cooldown - " + statuses[index_status].cooldown);
-            //Debug.Log("_status.cooldown - " + _status.cooldown);
             statuses[index_status].duration = _status.duration;
-            //statuses[index_status].cooldown = _status.cooldown;
         }
-
-        //Debug.Log( "Перейдём в обновлении статуса у игрока " + unit_name );
-        //UpdateUnitStatus();
     }
 
     void UpdateAllUnitStatus()
@@ -293,28 +238,16 @@ public class Unit : MonoBehaviour
 
     void UpdateUnitStatus()
     {
-        //if (IsUnitStatuses())
-        //{
-            //Debug.Log("==========UpdateUnitStatus " + unit_name);
-            UnitUI uUI = game.GetUnitUI(this);
-            if (uUI != null)
-            {
-                //Debug.Log("==========UpdateUnitStatus РЕЗУЛЬТАТ" + unit_name);
-                uUI.UpdateUnitStatus();
-            }
-            else
-            {
-                //Debug.Log("==========UpdateUnitStatus ПУСТОТА" + unit_name);
-                uUI.UpdateUnitStatus();
-            }
+        UnitUI uUI = game.GetUnitUI(this);
 
-        //}
-        
-        //for (int i = 0; i < game.all_abilites.Count; ++i)
-        //{
-        //    Ability ability = GameObject.Instantiate(game.all_abilites[i]);
-        //    abilities.Add(ability);
-        //}
+        if (uUI != null)
+        {
+            uUI.UpdateUnitStatus();
+        }
+        else
+        {
+            uUI.UpdateUnitStatus();
+        }
     }
 
     void SetUnitAbilites()
@@ -341,13 +274,9 @@ public class Unit : MonoBehaviour
 
         if (random_ability_one.name != "Kick")
         {
-            Debug.Log( name + " скил 2 найден" );
-            //abilities.Add(random_ability_one);
         }
         else
         {
-            Debug.Log(name + " второй ошибка .рестарт");
-            //abilities.Clear();
             SetTwoUnitAbilites();
             return;
         }
@@ -356,14 +285,11 @@ public class Unit : MonoBehaviour
 
         if (random_ability_two != null && random_ability_two != random_ability_one && random_ability_two.name != "Kick")
         {
-            Debug.Log(name + " скилл 3 найден");
-            Debug.Log(name + " ЗАПИСЫВАЕМ 2 СКИЛЛА");
             abilities.Add(random_ability_one);
             abilities.Add(random_ability_two);
         }
         else
         {
-            Debug.Log(name + " третий ошибка .рестарт");
             abilities.Clear();
             SetUnitAbilites();
         }
@@ -410,27 +336,16 @@ public class Unit : MonoBehaviour
 
     public void CheckCountStatus()
     {
-        //Debug.Log("!!!!!!!!!!!!!!!!CheckCountStatus " + unit_name);
 
         if (GetStunStatus() != null)
         {
-            //Debug.Log("Выполняем стан " + unit_name);
             Ability status1 = GetStunStatus();
-            //if (status1.is_new)
-            //{
-                //status1.is_new = false;
-                
-            //}
-           // else
-            //{
-                CheckActionTime(status1);
-            //}
+            CheckActionTime(status1);
             
         }
 
         if (GetProtectionStatus() != null)
         {
-            //Debug.Log("GetProtectionStatus " + unit_name);
             Ability status2 = GetProtectionStatus();
             if (status2.is_new)
             {
@@ -444,7 +359,6 @@ public class Unit : MonoBehaviour
 
         if (GetPoisonStatus() != null)
         {
-            //Debug.Log("GetPoisonStatus " + unit_name);
             Ability status3 = GetPoisonStatus();
             if (status3.is_new)
             {
@@ -459,119 +373,61 @@ public class Unit : MonoBehaviour
 
     public void StatusDamage()
     {
-        Debug.Log("StatusDamage Пассивный урон юнита в начале хода " + unit_name + "");
-
-        if (GetStunStatus() == null)
-        {
-            //Debug.Log("StatusDamage Стана нет у " + unit_name);
-        }
-        else
-        {
-            //Debug.Log("StatusDamage Снимаем стан у " + unit_name);
-            //Ability status_stun = GetStunStatus();
-            //CheckActionTime(status_stun);
-        }
-        //    Debug.Log("У юнита " + unit_name + " нет СТАНА. ОШИБКА");
-
-        //    //current_hp -= ability.damage;
-        //}
-        //else
-        //{
-        //Ability status_stun = GetStunStatus();
-        //CheckActionTime(status_stun);
-
-        //Debug.Log("У юнита " + unit_name + " Подтверждаеца СТАН");
         if (GetPoisonStatus() != null)
-            {
-                Ability status_poison = GetPoisonStatus();
-
-                //Debug.Log("У юнита " + unit_name + " Подтверждаеца ОТРАВА");
-
-                if (GetProtectionStatus() != null)
-                {
-                Ability status_protection = GetProtectionStatus();
-                current_hp -= status_poison.damage / 2;
-
-
-            }
-                else
-                {
-                current_hp -= status_poison.damage;
-
-            }
-
-                //CheckActionTime(status_poison);
-
-            }
+        {
+            Ability status_poison = GetPoisonStatus();
 
             if (GetProtectionStatus() != null)
             {
-                //Debug.Log("DamageСalculation - " + ability.damage / 2);
+
                 Ability status_protection = GetProtectionStatus();
-                //CheckActionTime(status_protection);
+                current_hp -= status_poison.damage / 2;
 
             }
-        //}
-        //if (IsUnitStatuses())
-        //{
-            //CheckCountStatus();
-            //UpdateUnitStatus();
-        //}
+            else
+            {
+                current_hp -= status_poison.damage;
+            }
+
+        }
+
+        if (GetProtectionStatus() != null)
+        {
+            Ability status_protection = GetProtectionStatus();
+        }
 
     }
 
     public void CheckActionTime(Ability _ability)
     {
-        //Debug.Log("!!!!!!!!!!!!!!!!!!!!! CheckActionTime - " + _ability.name);
-        //if (IsUnitStatuses())
-        //{
-        //    CheckCountStatus();
-        //    UpdateUnitStatus();
-        //}
+
         if (_ability.duration > 0)
         {
             _ability.duration--;
-            //CheckCountStatus();
-            //UpdateUnitStatus();
             if (_ability.duration <= 0)
             {
                 statuses.Remove(_ability);
-                //Destroy(_ability);
-
 
             }
         }
         else
         {
             statuses.Remove(_ability);
-            //Destroy(_ability);
         }
-        //UpdateUnitStatus();
     }
 
     public void OnTurnStart()
     {
-        //ПРОВЕРИТЬ ПАССИВНЫЙ УРОН В НАЧАЛЕ ХОДА ДРУЖЕСТВЕННОЙ ЕДЕНИЦЫ, в частности дженна от отравы
-        Debug.Log(this.unit_name + " ходит");
         foreach (var ability in abilities)
         {
-            //DamageСalculation(ability);
-            //Debug.Log(this.unit_name + " юзает абилку " + ability.name);
             ability.OnTurnStart();
         }
-        //CheckCountStatus();
     }
 
     public void OnTurnEnd()
     {
         UnitUI uUI = game.GetUnitUI(this);
-        Debug.Log("----------------- Конец хода - " + this.unit_name);
-        //foreach (var ability in abilities)
-        //{
-        //    //DamageСalculation(ability);
-        //    //Debug.Log(this.unit_name + " юзает абилку " + ability.name);
-        //    ability.OnTurnStart();
-        //}
+
         CheckCountStatus();
         UpdateAllUnitStatus();
         UpdateUnitStatus();
