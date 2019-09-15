@@ -246,7 +246,7 @@ public class Game : MonoBehaviour
             }
             else
             {
-                Debug.Log(unit.unit_name + " Нет статусов");
+                //Debug.Log(unit.unit_name + " Нет статусов");
                 AI.MakeAction(unit, evil_units, good_units);
             }
             if (unit.current_hp > 0.0f)

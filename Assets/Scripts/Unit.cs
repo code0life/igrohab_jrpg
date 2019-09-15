@@ -131,7 +131,8 @@ public class Unit : MonoBehaviour
         game = GameObject.Find("Game").GetComponent<Game>();
         boss = GameObject.Find("Director").GetComponent<Director>();
 
-        SetAllUnitAbilites();
+        //SetAllUnitAbilites();
+        SetUnitAbilites();
         SetUnitHP();
     }
 
