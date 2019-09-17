@@ -284,7 +284,7 @@ public class Unit : MonoBehaviour
 
         Ability random_ability_two = GetRndAbility();
 
-        if (random_ability_two != null && random_ability_two != random_ability_one && random_ability_two.name != "Kick")
+        if (random_ability_two.name != null && random_ability_two.name != random_ability_one.name && random_ability_two.name != "Kick")
         {
             abilities.Add(random_ability_one);
             abilities.Add(random_ability_two);
@@ -299,7 +299,8 @@ public class Unit : MonoBehaviour
 
     Ability GetRndAbility()
     {
-        Ability rnd_ability = game.all_abilites[UnityEngine.Random.Range(0, game.all_abilites.Count)];
+        //Ability rnd_ability = game.all_abilites[UnityEngine.Random.Range(0, game.all_abilites.Count)];
+        Ability rnd_ability = GameObject.Instantiate(game.all_abilites[UnityEngine.Random.Range(0, game.all_abilites.Count)]);
         return rnd_ability;
     }
 

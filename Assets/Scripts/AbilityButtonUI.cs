@@ -26,12 +26,6 @@ public class AbilityButtonUI : MonoBehaviour
 
         if (ability == null)
             return;
-
-    if ( ability.type == AbilityType.RECOVERY || ability.type == AbilityType.POISONING || ability.type == AbilityType.PROTECTION || ability.type == AbilityType.STUN )
-    {
-        colorAbility.SetActive(true);
-        SetColorButtom();
-    }
   }
 
     void SetColorButtom()
@@ -54,6 +48,16 @@ public class AbilityButtonUI : MonoBehaviour
         {
             colorAbility.GetComponent<Image>().color = Color.blue;
         }
+
+        if (ability.type == AbilityType.RECOVERY || ability.type == AbilityType.POISONING || ability.type == AbilityType.PROTECTION || ability.type == AbilityType.STUN)
+        {
+            colorAbility.SetActive(true);
+        }
+        else
+        {
+            colorAbility.SetActive(false);
+        }
+
     }
 
   void Update()
